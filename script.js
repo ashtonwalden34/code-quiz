@@ -1,108 +1,143 @@
-var myQuestions = [
-    {
-        question: "What is 10/2?",
-        answers: {
-            a: '3',
-            b: '5',
-            c: '115'
-        },
-        correctAnswer: 'b'
-    },
-    {
-        question: "What is 30/3?",
-        answers: {
-            a: '3',
-            b: '5',
-            c: '10'
-        },
-        correctAnswer: 'c'
-    }
-];
+//function that builds the list of questions and ability to choose from list of options
+   function buildQuiz(){
+      // array for HTML output
+      const output = [];
 
-var quizContainer = document.getElementById('quiz');
-var resultsContainer = document.getElementById('results');
-var submitButton = document.getElementById('submit');
-
-generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
-
-function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
-
-    function showQuestions(questions, quizContainer){
-        // we'll need a place to store the output and the answer choices
-        var output = [];
-        var answers;
-
-        // for each question...
-        for(var i=0; i<questions.length; i++){
-            
-            // first reset the list of answers
-            answers = [];
-
-            // for each available answer...
-            for(letter in questions[i].answers){
-
-                // ...add an html radio button
-                answers.push(
-                    '<label>'
-                        + '<input type="radio" name="question'+i+'" value="'+letter+'">'
-                        + letter + ': '
-                        + questions[i].answers[letter]
-                    + '</label>'
-                );
-            }
-
-            // add this question and its answers to the output
-            output.push(
-                '<div class="question">' + questions[i].question + '</div>'
-                + '<div class="answers">' + answers.join('') + '</div>'
+      quizQuestions.forEach(
+        (currentQuestion, questionNumber) => {
+          // variable for list of possible selections
+          const answers = [];
+  
+          // each possible selection
+          for(letter in currentQuestion.answers){
+  
+            //radio button - allows user to make selection from predefined list of options
+            //adding selection to 'answers' array
+            //adding radio button to each possible option (letter)
+            answers.push(
+              `<label>
+                <input type="radio" name="question${questionNumber}" value="${letter}">
+                ${letter} :
+                ${currentQuestion.answers[letter]}
+              </label>`
             );
+          }
+  
+          // adds question and possible answers to output array
+          output.push(
+            `<div class="question"> ${currentQuestion.question} </div>
+            <div class="answers"> ${answers.join('')} </div>`
+          );
+        }
+      );
+      // turns output array into string and adds it to the page
+      quizWrapper.innerHTML = output.join('');
+    };
+
+//function that displays results when the submit button is clicked
+    function showResults(){
+  
+      // creates constant named 'answerWrappers'
+      // holds value of everything in quizWrapper named 'answers'
+      const answerWrappers = quizWrapper.querySelectorAll('.answers');
+  
+      // holds number of user's correct answers
+      let numCorrect = 0;
+
+      quizQuestions.forEach( (currentQuestion, questionNumber) => {
+  
+        // looks in list of possible answers for each question
+        // finds user selected answer ('checked')
+        // takes selected option and adds it to 'userSelection' from 'selector'
+        const answerWrapper = answerWrappers[questionNumber];
+        const selector = `input[name=question${questionNumber}]:checked`;
+        const userSelection = (answerWrapper.querySelector(selector) || {}).value;
+  
+        // if the selection is the correct answer, it will:
+             // increment 'numCorrect' by 1 
+             // color the list of options green
+        if(userSelection === currentQuestion.correctAnswer){
+          numCorrect++;
+          answerWrappers[questionNumber].style.color = 'lightgreen';
         }
 
-        // finally combine our output list into one string of html and put it on the page
-        quizContainer.innerHTML = output.join('');
-    }
-
-
-    function showResults(questions, quizContainer, resultsContainer){
-        
-        // gather answer containers from our quiz
-        var answerContainers = quizContainer.querySelectorAll('.answers');
-        
-        // keep track of user's answers
-        var userAnswer = '';
-        var numCorrect = 0;
-        
-        // for each question...
-        for(var i=0; i<questions.length; i++){
-
-            // find selected answer
-            userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
-            
-            // if answer is correct
-            if(userAnswer===questions[i].correctAnswer){
-                // add to the number of correct answers
-                numCorrect++;
-                
-                // color the answers green
-                answerContainers[i].style.color = 'lightgreen';
-            }
-            // if answer is wrong or blank
-            else{
-                // color the answers red
-                answerContainers[i].style.color = 'red';
-            }
+        // if the selection is incorrect or blank, it will:
+            //color the list of options red
+        else{
+          answerWrappers[questionNumber].style.color = 'red';
         }
+      });
+  
+      // displays the number of correct selections out of total questions
+      // innerHTML adds to HTML and displays
+      resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+    };
 
-        // show number of correct answers out of total
-        resultsContainer.innerHTML = numCorrect + ' out of ' + questions.length;
-    }
+    // gets html div element 'quiz'
+    const quizWrapper = document.getElementById('quiz');
+    // gets html div element 'results'
+    const resultsWrapper = document.getElementById('results');
+    // gets html button element 'submit
+    const submitButton = document.getElementById('submit');
 
-    // show questions right away
-    showQuestions(questions, quizContainer);
-    
-    // on submit, show results
-    submitButton.onclick = function(){
-        showResults(questions, quizContainer, resultsContainer);
-    }
-
-}
+    // creates array 'quizQuestions' and stores questions, options, and correctAnswers
+    // 'questions', 'answers', and 'correctAnswer' stored as elements?
+    const quizQuestions = [
+      {
+        question: "1. Commonly used data types DO NOT include:",
+        answers: {
+          a: "Strings",
+          b: "Booleans",
+          c: "Alerts",
+          d: "Numbers"
+        },
+        correctAnswer: "c"
+      },
+      {
+        question: "2. The condition in an if/else statement is enclosed within _____.",
+        answers: {
+          a: "Quotes",
+          b: "Curly Brackets",
+          c: "Parenthesis",
+          d: "Square Brackets"
+        },
+        correctAnswer: "c"
+      },
+      {
+        question: "3. Arrays in JavaScript can be used to store _____.",
+        answers: {
+          a: "Numbers and Strings",
+          b: "Other Arrays",
+          c: "Booleans",
+          d: "All of the above"
+        },
+        correctAnswer: "d"
+      },
+      {
+        question: "4. String values must be enclosed within _____ when being assigned to variables.",
+        answers: {
+          a: "Commas",
+          b: "Curly Brackets",
+          c: "Quotes",
+          d: "Parenthesis"
+        },
+        correctAnswer: "c"
+      },
+      {
+        question: "5. A very useful tool used during development and debugging for printing content to the debugger is _____.",
+        answers: {
+          a: "JavaScript",
+          b: "Terminal/Bash",
+          c: "For Loops",
+          d: "console.log"
+        },
+        correctAnswer: "d"
+      },
+    ];
+  
+    // Calls build quiz function to start application
+    buildQuiz();
+  
+    // Event listener added to submit button
+    // When clicked it will call the 'showResults' function
+    submitButton.addEventListener('click', showResults);
