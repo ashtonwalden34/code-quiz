@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+    <div id="scores"></div>
+    <ul id="scoreList"></ul>
+
+    <script>
+
+        var highScore = JSON.parse(localStorage.getItem('scores'));
+
+        console.log(highScore);
+
+        for(var i=0; i<highScore.length; i++){
+       
+            var textName = highScore[i].name
+
+            console.log('this is the name!!',textName);
+            var container = $('<div>')
+                var nameTest = $('<li>').text(textName + " " + highScore[i].score)
+                    
+                
+           //var score=$("<li>").text(highScore[i].score);
+
+            container.append(nameTest)
+            $("#scoreList").append(container);
+        };
+
+        
+
+
+
+    </script>
+</body>
+</html>
