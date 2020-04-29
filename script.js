@@ -1,11 +1,10 @@
-//function that builds the list of questions and ability to choose from list of options
+// Hides submit button
 $('#submit').hide()
 
 // Starts quiz from question 1
 var questionIndex = 0
 
-
-
+//function that builds the list of questions and ability to choose from list of options
 // Function to construct quiz
   function buildQuiz(){
     // array for HTML output
@@ -86,7 +85,6 @@ const userSelection = (answerWrapper.querySelector(selector) || {}).value;
 
       var name = prompt("Please enter your name");
       console.log(name);
-
 
       var newEntry = {
         name: name,
@@ -180,7 +178,6 @@ const userSelection = (answerWrapper.querySelector(selector) || {}).value;
 
 
 $('#nextBtn').on('click', function(){ 
-  console.log('U got clicked next btn!!!!')
   if (questionIndex < quizQuestions.length -1) {
     // increments to next question
     questionIndex++
@@ -191,10 +188,8 @@ $('#nextBtn').on('click', function(){
     //$('#quiz').hide()
     $('#nextBtn').hide()
     $('#submit').show()
-    
   }
-})
-
+});
 
 
 
@@ -203,4 +198,8 @@ $('#nextBtn').on('click', function(){
   
 // Event listener added to submit button
 // When clicked it will call the 'showResults' function
-  submitButton.addEventListener('click', showResults);
+  //submitButton.addEventListener('click', showResults);
+
+  document.getElementById("submit").onclick = function() {
+    location.href = "results.html";
+  }
