@@ -1,8 +1,67 @@
+// gets html div element 'quiz'
+const quizWrapper = document.getElementById('quiz');
+// gets html div element 'results'
+const resultsWrapper = document.getElementById('results');
+// gets html button element 'submit
+const submitButton = document.getElementById('submit');
+
 // Hides submit button
 $('#submit').hide()
 
-// Starts quiz from question 1
-var questionIndex = 0
+// creates array 'quizQuestions' and stores questions, options, and correctAnswers
+// 'questions', 'answers', and 'correctAnswer' stored as elements?
+var quizQuestions = [
+  {
+    question: "1. Commonly used data types DO NOT include:",
+    answers: {
+      a: "Strings",
+      b: "Booleans",
+      c: "Alerts",
+      d: "Numbers"
+     },
+    correctAnswer: "c"
+  },
+  {
+    question: "2. The condition in an if/else statement is enclosed within _____.",
+    answers: {
+        a: "Quotes",
+        b: "Curly Brackets",
+        c: "Parenthesis",
+        d: "Square Brackets"
+      },
+    correctAnswer: "c"
+  },
+  {
+    question: "3. Arrays in JavaScript can be used to store _____.",
+    answers: {
+        a: "Numbers and Strings",
+        b: "Other Arrays",
+        c: "Booleans",
+        d: "All of the above"
+      },
+    correctAnswer: "d"
+  },
+  {
+    question: "4. String values must be enclosed within _____ when being assigned to variables.",
+    answers: {
+       a: "Commas",
+       b: "Curly Brackets",
+       c: "Quotes",
+       d: "Parenthesis"
+      },
+    correctAnswer: "c"
+  },
+  {
+    question: "5. A very useful tool used during development and debugging for printing content to the debugger is _____.",
+    answers: {
+        a: "JavaScript",
+        b: "Terminal/Bash",
+        c: "For Loops",
+        d: "console.log"
+      },
+    correctAnswer: "d"
+  },
+];
 
 //function that builds the list of questions and ability to choose from list of options
 // Function to construct quiz
@@ -39,20 +98,39 @@ var questionIndex = 0
       quizWrapper.innerHTML = output.join('');
   };
 
+// Starts quiz from question 1
+var questionIndex = 0
 
-
+// Creates function for next button to go through questions one by one
+$('#nextBtn').on('click', function() { 
+  if (questionIndex < quizQuestions.length -1) {
+    // increments to next question
+    questionIndex++
+    // builds next question
+    buildQuiz()
+  } else {
+    //$('#quiz').hide()
+    $('#nextBtn').hide()
+    $('#submit').show()
+  }
+});
+  
 // variable to store number of correct answers
 var numCorrect;
 
 
 
+// Function doesn't seem to be called, but still when taken out, 
+  //  - Submit button shows
+  //  - No questions appear
+  //  - Next button appears
 
-//function that displays results when the submit button is clicked
+
+
   function showResults(){
     // creates constant named 'answerWrappers'
     // holds value of everything in quizWrapper named 'answers'
 const answerWrappers = quizWrapper.querySelectorAll('.answers');
-
     // holds number of user's correct answers
     let numCorrect = 0;
     quizQuestions.forEach( (currentQuestion, questionNumber) => {
@@ -60,136 +138,56 @@ const answerWrappers = quizWrapper.querySelectorAll('.answers');
       // finds user selected answer ('checked')
       // takes selected option and adds it to 'userSelection' from 'selector'
 const answerWrapper = answerWrappers[questionNumber];
-      const selector = `input[name=question${questionNumber}]:checked`;
+const selector = `input[name=question${questionNumber}]:checked`;
 const userSelection = (answerWrapper.querySelector(selector) || {}).value;
       // if the selection is the correct answer, it will:
         // increment 'numCorrect' by 1 
-        // color the list of options green
         if(userSelection === currentQuestion.correctAnswer){
           numCorrect++;
-          //answerWrappers[questionNumber].style.color = 'lightgreen';
         }
         // if the selection is incorrect or blank, it will:
-          //color the list of options red
         else{
-          //answerWrappers[questionNumber].style.color = 'red';
-        }
+          numCorrect + 0
+        };
     });
-  
 
 
 
-      // displays the number of correct selections out of total questions
-      // innerHTML adds to HTML and displays
-      resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+// displays the number of correct selections out of total questions
+// innerHTML adds to HTML and displays
+resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
 
-      var name = prompt("Please enter your name");
-      console.log(name);
+      
 
-      var newEntry = {
-        name: name,
-        score: numCorrect
-      }
+      
 
-      // Store final score in local storage
+    // Store final score in local storage
+      // Gets past scores from local storage
+  function storeScores(){
       if(localStorage.getItem('scores')) {
         console.log('About to add to existing array!!')
-        
+        // Parses past scores from strings to numbers
         var pastScore = JSON.parse(localStorage.getItem('scores'))
+        // Adds new score to past score array
         pastScore.push(newEntry);
+        // Adds updated scores array to local storage
+        // Parses scores array as strings
         localStorage.setItem("scores", JSON.stringify(pastScore));
+        // If there are no past scores it creates an array for scores
       } else {
         console.log('about to start new array')
         var newScoreArray = []
+        // Adds new score to array
         newScoreArray.push(newEntry)
+        // Sets array in local storage
+        // Parses array as strings
         localStorage.setItem("scores", JSON.stringify(newScoreArray));
       }
-      
+      // Shows array on results page?
       window.location = 'file:///Users/ashtonwalden/UUBC/homework-4/results.html' 
     };
+  };
 
-
-
-    // gets html div element 'quiz'
-    const quizWrapper = document.getElementById('quiz');
-    // gets html div element 'results'
-    const resultsWrapper = document.getElementById('results');
-    // gets html button element 'submit
-    const submitButton = document.getElementById('submit');
-    
-
-
-// creates array 'quizQuestions' and stores questions, options, and correctAnswers
-// 'questions', 'answers', and 'correctAnswer' stored as elements?
-  var quizQuestions = [
-    {
-      question: "1. Commonly used data types DO NOT include:",
-      answers: {
-        a: "Strings",
-        b: "Booleans",
-        c: "Alerts",
-        d: "Numbers"
-       },
-      correctAnswer: "c"
-    },
-    {
-      question: "2. The condition in an if/else statement is enclosed within _____.",
-      answers: {
-          a: "Quotes",
-          b: "Curly Brackets",
-          c: "Parenthesis",
-          d: "Square Brackets"
-        },
-      correctAnswer: "c"
-    },
-    {
-      question: "3. Arrays in JavaScript can be used to store _____.",
-      answers: {
-          a: "Numbers and Strings",
-          b: "Other Arrays",
-          c: "Booleans",
-          d: "All of the above"
-        },
-      correctAnswer: "d"
-    },
-    {
-      question: "4. String values must be enclosed within _____ when being assigned to variables.",
-      answers: {
-         a: "Commas",
-         b: "Curly Brackets",
-         c: "Quotes",
-         d: "Parenthesis"
-        },
-      correctAnswer: "c"
-    },
-    {
-      question: "5. A very useful tool used during development and debugging for printing content to the debugger is _____.",
-      answers: {
-          a: "JavaScript",
-          b: "Terminal/Bash",
-          c: "For Loops",
-          d: "console.log"
-        },
-      correctAnswer: "d"
-    },
-  ];
-
-
-
-
-$('#nextBtn').on('click', function(){ 
-  if (questionIndex < quizQuestions.length -1) {
-    // increments to next question
-    questionIndex++
-    // builds next question
-    buildQuiz()
-  }
-  else {
-    //$('#quiz').hide()
-    $('#nextBtn').hide()
-    $('#submit').show()
-  }
-});
 
 
 
@@ -199,7 +197,22 @@ $('#nextBtn').on('click', function(){
 // Event listener added to submit button
 // When clicked it will call the 'showResults' function
   //submitButton.addEventListener('click', showResults);
-
   document.getElementById("submit").onclick = function() {
-    location.href = "results.html";
+
+    // Prompts user to enter name
+    var name = prompt("Please enter your name");
+
+    // Stores name and score
+    var newEntry = {
+      name: name,
+      score: numCorrect
+    }
+
+    console.log('Stored name and score');
+
+
+    //showResults();
+
+    // Links to results page
+    //location.href = "results.html";
   }

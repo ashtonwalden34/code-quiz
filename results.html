@@ -18,22 +18,23 @@
     <ul id="scoreList"></ul>
 
     <script>
-
+        // Gets scores from local storage and parses them
         var highScore = JSON.parse(localStorage.getItem('scores'));
 
-        console.log(highScore);
+        //console.log(highScore);
 
         for(var i=0; i<highScore.length; i++){
-       
+            
             var textName = highScore[i].name
 
-            console.log('this is the name!!',textName);
+            //console.log('this is the name!!',textName);
             var container = $('<div>')
                 var nameTest = $('<li>').text(textName + " " + highScore[i].score)
                     
                 
-           //var score=$("<li>").text(highScore[i].score);
+           var score=$("<li>").text(highScore[i].score);
 
+            // Adds list of names and scores to page
             container.append(nameTest)
             $("#scoreList").append(container);
         };
