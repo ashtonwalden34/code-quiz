@@ -81,7 +81,7 @@ var quizQuestions = [
       //adding radio button to each possible option (letter)
       answers.push(
         `<label>
-          <input type="radio" name="question${questionIndex}" value="${letter}">
+          <input type="radio" name="question${questionIndex}" value="${letter}" class="userSelection">
           ${letter} :
           ${currentQuestion.answers[letter]}
         </label>`
@@ -105,6 +105,7 @@ var questionIndex = 0
 $('#nextBtn').on('click', function() { 
   if (questionIndex < quizQuestions.length -1) {
     // increments to next question
+    trackScore(questionIndex)
     questionIndex++
     // builds next question
     buildQuiz()
@@ -116,54 +117,41 @@ $('#nextBtn').on('click', function() {
 });
   
 // variable to store number of correct answers
-var numCorrect;
+var numCorrect = 0;
 
-
-
-// Function doesn't seem to be called, but still when taken out, 
-  //  - Submit button shows
-  //  - No questions appear
-  //  - Next button appears
-
-
-
-  function showResults(){
+function trackScore(index){
     // creates constant named 'answerWrappers'
     // holds value of everything in quizWrapper named 'answers'
 const answerWrappers = quizWrapper.querySelectorAll('.answers');
     // holds number of user's correct answers
-    let numCorrect = 0;
-    quizQuestions.forEach( (currentQuestion, questionNumber) => {
+    //let numCorrect = 0;
+    //quizQuestions.forEach( (currentQuestion, questionNumber) => {
       // looks in list of possible answers for each question
       // finds user selected answer ('checked')
       // takes selected option and adds it to 'userSelection' from 'selector'
-const answerWrapper = answerWrappers[questionNumber];
-const selector = `input[name=question${questionNumber}]:checked`;
-const userSelection = (answerWrapper.querySelector(selector) || {}).value;
-      // if the selection is the correct answer, it will:
-        // increment 'numCorrect' by 1 
-        if(userSelection === currentQuestion.correctAnswer){
-          numCorrect++;
-        }
-        // if the selection is incorrect or blank, it will:
-        else{
-          numCorrect + 0
-        };
-    });
+    //const answerWrapper = answerWrappers[questionNumber];
+    const selector = `input[name=question${index}]:checked`;
+    const userSelection = $(selector).val();
+
+  
+    //console.log(userSelection);
+    //console.log(currentQuestion.correctAnswer);
+    //console.log(currentQuestion);
+    //console.log(questionNumber);
+    // if the selection is the correct answer, it will:
+      // increment 'numCorrect' by 1 
+      if(userSelection === quizQuestions[index].correctAnswer){
+        numCorrect++;
+      }
+      // if the selection is incorrect or blank, it will:
+console.log(numCorrect);
+//});
+};
 
 
-
-// displays the number of correct selections out of total questions
-// innerHTML adds to HTML and displays
-resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
-
-      
-
-      
-
+function storeScores(newEntry) {
     // Store final score in local storage
       // Gets past scores from local storage
-  function storeScores(){
       if(localStorage.getItem('scores')) {
         console.log('About to add to existing array!!')
         // Parses past scores from strings to numbers
@@ -182,25 +170,28 @@ resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
         // Sets array in local storage
         // Parses array as strings
         localStorage.setItem("scores", JSON.stringify(newScoreArray));
-      }
+      };
       // Shows array on results page?
       window.location = 'file:///Users/ashtonwalden/UUBC/homework-4/results.html' 
-    };
-  };
+};
 
 
 
 
 // Calls build quiz function to start application
   buildQuiz();
+
   
 // Event listener added to submit button
 // When clicked it will call the 'showResults' function
   //submitButton.addEventListener('click', showResults);
   document.getElementById("submit").onclick = function() {
 
+
     // Prompts user to enter name
     var name = prompt("Please enter your name");
+
+    
 
     // Stores name and score
     var newEntry = {
@@ -208,11 +199,13 @@ resultsWrapper.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
       score: numCorrect
     }
 
+    storeScores(newEntry);
+
     console.log('Stored name and score');
+    console.log(name);
+    console.log(numCorrect);
 
-
-    //showResults();
 
     // Links to results page
-    //location.href = "results.html";
+    location.href = "results.html";
   }
