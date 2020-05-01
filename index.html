@@ -6,21 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="Assets/style.css" rel="stylesheet" type="text/css">
     <title>Code Quiz</title>
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
-
+  
+<div class="container">
+  <div id="quizWrapper">
     <div id="quiz"></div>
     <button id="nextBtn">Next</button>
     <button id="submit">Submit Quiz</button>
-    <div id="results"></div>
+  </div>
 
-    <!-- <a href="results.html"> GO TO HIGHSCORE </a> -->
+  <div id="quizStats">
+    <div id="timer">Time:<span id="time"></span></div>
+    <div id="scoreDisplay"></div>
+  </div>
+  
+    
+  <div id="results"></div>
+</div>
+
+   
+
 
     <script type="text/javascript" src="script.js"></script>
 

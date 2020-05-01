@@ -96,6 +96,9 @@ var quizQuestions = [
      // );
       // turns output array into string and adds it to the page
       quizWrapper.innerHTML = output.join('');
+      // Displaying current score
+      document.getElementById("scoreDisplay").innerHTML = (`Current Score: ${numCorrect}/5`)
+
   };
 
 // Starts quiz from question 1
@@ -110,7 +113,6 @@ $('#nextBtn').on('click', function() {
     // builds next question
     buildQuiz()
   } else {
-    //$('#quiz').hide()
     $('#nextBtn').hide()
     $('#submit').show()
   }
@@ -120,32 +122,16 @@ $('#nextBtn').on('click', function() {
 var numCorrect = 0;
 
 function trackScore(index){
-    // creates constant named 'answerWrappers'
-    // holds value of everything in quizWrapper named 'answers'
-const answerWrappers = quizWrapper.querySelectorAll('.answers');
-    // holds number of user's correct answers
-    //let numCorrect = 0;
-    //quizQuestions.forEach( (currentQuestion, questionNumber) => {
-      // looks in list of possible answers for each question
-      // finds user selected answer ('checked')
-      // takes selected option and adds it to 'userSelection' from 'selector'
-    //const answerWrapper = answerWrappers[questionNumber];
-    const selector = `input[name=question${index}]:checked`;
-    const userSelection = $(selector).val();
-
-  
-    //console.log(userSelection);
-    //console.log(currentQuestion.correctAnswer);
-    //console.log(currentQuestion);
-    //console.log(questionNumber);
+  // creates constant named 'answerWrappers'
+  // holds value of everything in quizWrapper named 'answers'
+  const answerWrappers = quizWrapper.querySelectorAll('.answers');
+  const selector = `input[name=question${index}]:checked`;
+  const userSelection = $(selector).val();
     // if the selection is the correct answer, it will:
-      // increment 'numCorrect' by 1 
-      if(userSelection === quizQuestions[index].correctAnswer){
-        numCorrect++;
-      }
-      // if the selection is incorrect or blank, it will:
-console.log(numCorrect);
-//});
+    // increment 'numCorrect' by 1 
+    if(userSelection === quizQuestions[index].correctAnswer){
+      numCorrect++;
+    }
 };
 
 
@@ -183,15 +169,10 @@ function storeScores(newEntry) {
 
   
 // Event listener added to submit button
-// When clicked it will call the 'showResults' function
-  //submitButton.addEventListener('click', showResults);
-  document.getElementById("submit").onclick = function() {
-
+document.getElementById("submit").onclick = function() {
 
     // Prompts user to enter name
     var name = prompt("Please enter your name");
-
-    
 
     // Stores name and score
     var newEntry = {
@@ -201,11 +182,54 @@ function storeScores(newEntry) {
 
     storeScores(newEntry);
 
-    console.log('Stored name and score');
-    console.log(name);
-    console.log(numCorrect);
-
-
     // Links to results page
     location.href = "results.html";
-  }
+  };
+
+
+
+// Countdown timer
+function startTimer(duration, display) {
+  var timer = duration, minutes, seconds;
+  setInterval(function () {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+      // Adds tens place for seconds and minutes
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      
+      // Populates 'time' span on html with minutes and seconds
+      display.textContent = ` ${minutes}:${seconds}`;
+
+      // If the timer runs out, it will alert the user and force them to submit the quiz
+      if (--timer == 0) {
+          alert('out of time')
+          function outOfTimeSubmit() {
+            // Prompts user to enter name
+            var name = prompt("Please enter your name");
+
+            // Stores name and score
+            var newEntry = {
+              name: name,
+              score: numCorrect
+            }
+
+            storeScores(newEntry);
+
+            // Links to results page
+            location.href = "results.html";
+          }
+          outOfTimeSubmit();
+      }
+  }, 1000);
+}
+
+// Page alerts user and then begins timer after the user acknowledges the alert
+window.onload = function () {
+  alert("You have 2 minutes to complete this quiz.")
+  var twoMin = 60 * 2,
+      timeDisplay = document.querySelector('#time');
+  startTimer(twoMin, timeDisplay);
+};
+
+

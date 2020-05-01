@@ -26,3 +26,29 @@ body{
 #submit:hover{
     background-color: #38a;
 }
+
+#quizStats{
+  border: solid purple 2px;
+  height: fit-content;
+  width: 20%;
+  float: right;
+}
+
+#scoreDisplay{
+  border: solid green 1px;
+  width: fit-content;
+  padding-top: 2%;
+}
+
+#timer{
+  border: solid red 1px;
+  width: fit-content;
+  padding: 1%;
+}
+
+#quizWrapper{
+  border: solid blue 1px;
+  float: left;
+  width: 75%;
+}
+
